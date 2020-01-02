@@ -1,22 +1,30 @@
 <template>
   <div id="app">
     <greeting />
+    <hr class="divider" />
       <div v-if="this.confirmed === false">
         <ul>
-          <li v-for="ting in tings" :key="ting">{{ting}}</li>
+          <li v-for="ting in tings" :key="ting" :class="[ting.sent ? 'strikethrough' : '']">
+            {{ting.name}}
+          </li>
         </ul>
         <p v-if="tings.length < 1" >No tings in here</p>
-        <button v-if="this.state === 'default'" @click="editTings('edit')" class="button">Add some tings</button><br/>
+        <button v-if="this.state === 'default'" @click="editTings('edit')" class="button">Add some tings</button>
         <div v-if="this.state === 'edit'" class="addTings">
-          <input v-model="newTing" type="text" :placeholder="inputPlaceholder" v-on:keyup.enter="addToList" /><br>
-          <div v-if="this.newTing.length > 0" class="ting-stuff">
-            <a class="button" :href="'https://www.google.com/search?q=' + newTing" target="_blank">Search ting</a>
-            <button class="button" v-on:click="addToList">Add to Tings</button>
-            <button v-if="this.state === 'edit'" @click="editTings('default')" class="button button--alt">Naaaahh man</button>
+          <div class="row">
+            <input class="addTings__input" v-model="newTing" type="text" :placeholder="inputPlaceholder" />
+          </div>
+          <div class="row">
+            <a class="button" :href="'https://www.google.com/search?q=' + newTing" target="_blank" title="Search ting name on google">Search ting</a>
+            <button class="button" v-on:click="addtoTings">Add to Tings</button>
+            <button v-if="this.state === 'edit'" @click="editTings('default')" class="button">Cancel</button>
           </div>
         </div>
-        <button class="button" v-on:click="removeFromList">Remove all tings</button><br/>
-        <button class="button button--alt" v-on:click="send">Send tings</button>
+        <hr class="divider" />
+        <div class="row">
+          <button class="button" v-on:click="removeFromList">Remove all tings</button>
+          <button class="button button--alt" v-on:click="send">Send tings</button>
+        </div>
       </div>
       <div class="sent" v-if="this.confirmed">
         <p v-if="this.confirmed">Tings are sent, coming to man</p>
@@ -35,7 +43,16 @@ export default {
   },
   data: function () {
     return {
-      tings: [],
+      tings: [
+        {
+          name: 'someting',
+          sent: true
+        },
+        {
+          name: 'and dat',
+          sent: false
+        }
+      ],
       inputPlaceholder: 'Someting',
       newTing: '',
       state: 'default',
@@ -47,8 +64,11 @@ export default {
       this.state = arg
       this.newTing = ''
     },
-    addToList () {
-      this.tings.push(this.newTing)
+    addtoTings () {
+      this.tings.push({
+        name: this.newTing,
+        sent: false
+      })
       this.newTing = ''
     },
     removeFromList () {
@@ -66,21 +86,40 @@ export default {
 </script>
 
 <style lang="scss">
+h1, h2, h3, h4, h5{
+  margin:0;
+  padding:0;
+}
+html, body{
+  width:100%;
+  height:100%;
+}
 body{
   color: white;
   background-color:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  & *{
+    flex-grow:1;
+  }
 }
 .button{
   border-radius:0;
-  background:transparent;
+  background:black;
   color:white;
   margin:.2em;
   padding:1em;
-  border:1px solid white;
-  display:inline-block;
+  border-radius:5px;
   font-size:1em;
   line-height:1em;
   text-decoration:none;
+  border:none;
+  cursor:pointer;
   &--invert{
     background:white;
     color:black;
@@ -113,6 +152,29 @@ ul{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin-top: 200px;
+  max-width:600px;
+  background-color:rgba(white, .1);
+  padding:2em;
+  border-radius: .5em;
+}
+.addTings{
+  .button{
+    font-size:.7em;
+    font-weight:700;
+  }
+  &__input{
+    width:100%;
+  }
+}
+.divider{
+  background-color:black;
+  height:1px;
+  border: none;
+  border-bottom: 1px solid rgba(white, .17);
+  margin-top:1em;
+  margin-bottom:1em;
+}
+.strikethrough{
+  text-decoration: line-through;
 }
 </style>
