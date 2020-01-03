@@ -4,8 +4,8 @@
     <hr class="divider" />
       <div v-if="this.confirmed === false">
         <ul>
-          <li v-for="ting in tings" :key="ting" :class="[ting.sent ? 'strikethrough' : '']">
-            {{ting.name}}
+          <li v-for="ting in tings" :key="ting" class="ting" :class="[ting.ordered ? 'ordered' : '', ting.stock === 0 ? 'unavailable' : '']">
+            {{ting.name}} <span class="stock-level"> – {{ ting.stock === 0 ? 'Out of stock' : 'In stock' }}</span>
           </li>
         </ul>
         <p v-if="tings.length < 1" >No tings in here</p>
@@ -45,12 +45,19 @@ export default {
     return {
       tings: [
         {
-          name: 'someting',
-          sent: true
+          name: 'Reebok Classic',
+          ordered: false,
+          stock: 2
         },
         {
-          name: 'and dat',
-          sent: false
+          name: 'Adidas Originals',
+          ordered: false,
+          stock: 1
+        },
+        {
+          name: 'Vans Old School',
+          ordered: false,
+          stock: 2
         }
       ],
       inputPlaceholder: 'Someting',
@@ -75,11 +82,13 @@ export default {
       this.tings = []
     },
     send () {
+      this.tings.forEach(ting => {
+        ting.stock = ting.stock - 1
+      })
       this.confirmed = true
     },
     restart () {
       this.confirmed = false
-      this.tings = []
     }
   }
 }
@@ -174,7 +183,11 @@ ul{
   margin-top:1em;
   margin-bottom:1em;
 }
-.strikethrough{
+.unavailable{
   text-decoration: line-through;
+  color:rgba(white, .2)
+}
+.ordered{
+  color:green;
 }
 </style>
