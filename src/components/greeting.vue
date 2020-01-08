@@ -5,11 +5,7 @@
 </template>
 <script>
 export default {
-  data: function () {
-    return {
-      msg: 'Hi fam'
-    }
-  }
+  props: ['msg']
 }
 </script>
 <style scoped>
