@@ -1,13 +1,21 @@
 <template>
-  <li class="ting">{{ting.name}}</li>
+  <li class="ting" :class="[this.stock < 1 ? 'unavailable' : '']">
+    <span class="ting__name">{{this.name}}</span>
+    <span class="stock-level"> – {{ this.stock === 0 ? 'Out of stock' : 'In stock' }} <span class="stock-level__number">({{this.stock}})</span></span>
+  </li>
 </template>
 <script>
 export default {
-  name: 'Ting',
+  name: 'ting',
   props: {
-    name: String,
-    ordered: Boolean,
-    stock: Number
+    name: {
+      type: String,
+      required: true
+    },
+    stock: {
+      type: Number,
+      required: true
+    }
   }
 }
 </script>

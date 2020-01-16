@@ -4,24 +4,11 @@
     <hr class="divider" />
       <div v-if="this.confirmed === false">
         <ul>
-          <li v-for="ting in reversedList" :key="ting" class="ting" :class="[ting.ordered ? 'ordered' : '', ting.stock < 1 ? 'unavailable' : '']">
-            <span class="ting__name">{{ting.name}}</span> <span class="stock-level"> – {{ ting.stock === 0 ? 'Out of stock' : 'In stock' }} <span class="stock-level__number">({{ting.stock}})</span></span>
-          </li>
+          <ting v-for="ting in reversedList" :key="ting.key" :name="ting.name" :ordered="ting.ordered" :stock="ting.stock" />
         </ul>
         <p v-if="tings.length < 1" >No tings in here</p>
-        <button v-if="this.state === 'default'" @click="editTings('edit')" class="button">Add some tings</button>
         <!-- Input section -->
-        <div v-if="this.state === 'edit'" class="addTings">
-          <div class="row row--mb">
-            <input class="addTings__input" v-model="newTing" type="text" :placeholder="inputPlaceholder" :maxlength="inputCharacterMax" />
-            <div class="addTings__character-count"><span>{{newTing.length}} / {{inputCharacterMax}}</span></div>
-          </div>
-          <div :class="{'addTings__controls--disabled' : newTing.length < 1 }" class="row addTings__controls">
-            <button v-if="this.state === 'edit'" @click="editTings('default')" class="button addTings__controls__cancel">Cancel</button>
-            <a class="button" disabled="true" :href="'https://www.google.com/search?q=' + newTing" target="_blank" title="Search ting name on google">Search ting</a>
-            <button class="button button--alt-invert" v-on:click="addtoTings">Add to Tings</button>
-          </div>
-        </div>
+        <addTing />
         <!-- End input section -->
         <hr class="divider" />
         <div class="row">
@@ -38,57 +25,44 @@
 
 <script>
 import greeting from './components/greeting.vue'
+import ting from './components/ting.vue'
+import addTing from './components/addTing.vue'
 
 export default {
   name: 'app',
   components: {
-    greeting
+    greeting,
+    ting,
+    addTing
   },
   data: function () {
     return {
       tings: [
         {
           name: 'Reebok Classic',
-          ordered: false,
           stock: 2
         },
         {
           name: 'Adidas Originals',
-          ordered: false,
           stock: 1
         },
         {
           name: 'Vans Old School',
-          ordered: false,
           stock: 2
         }
       ],
-      inputPlaceholder: 'Someting',
-      newTing: '',
-      state: 'default',
-      inputCharacterMax: 20,
       confirmed: false
     }
   },
   methods: {
-    editTings (arg) {
-      this.state = arg
-      this.newTing = ''
-    },
-    addtoTings () {
-      this.tings.push({
-        name: this.newTing,
-        sent: false,
-        stock: 1
-      })
-      this.newTing = ''
-    },
     removeFromList () {
       this.tings = []
     },
     send () {
       this.tings.forEach(ting => {
-        ting.stock = ting.stock - 1
+        if (ting.stock > 0) {
+          ting.stock = ting.stock - 1
+        }
       })
       this.confirmed = true
     },
