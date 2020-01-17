@@ -45,5 +45,34 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.addTings{
+  .button{
+    font-size:.7em;
+    font-weight:700;
+  }
+  &__input{
+    width:100%;
+    border-radius:5px;
+    border:none;
+  }
+  &__character-count{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:.4em;
+    padding:0 1em;
+    border-radius:5px;
+    border:none;
+    background-color:rgba(white,.1);
+    font-size:.8em;
+    white-space: nowrap;
+  }
+  &__controls{
+    &--disabled{
+      .button:not(.addTings__controls__cancel){
+        opacity:.3;
+      }
+    }
+  }
+}
 </style>

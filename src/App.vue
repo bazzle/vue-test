@@ -6,12 +6,12 @@
         <ul>
           <ting v-for="ting in reversedList" :key="ting.key" :name="ting.name" :ordered="ting.ordered" :stock="ting.stock" />
         </ul>
-        <p v-if="tings.length < 1" >No tings in here</p>
+        <p v-if="this.tings.length < 1" >No tings in here</p>
         <!-- Input section -->
         <addTing />
         <!-- End input section -->
         <hr class="divider" />
-        <div class="row">
+        <div v-if="this.tings.length > 0" class="row">
           <button class="button" v-on:click="removeFromList">Remove all tings</button>
           <button class="button button--alt" v-on:click="send">Send tings</button>
         </div>
@@ -159,45 +159,11 @@ ul{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  max-width:600px;
+  max-width:300px;
   background-color:rgba(white, .1);
   padding:2em;
   border-radius: .5em;
-}
-.addTings{
-  .button{
-    font-size:.7em;
-    font-weight:700;
-  }
-  &__input{
-    width:100%;
-    border-radius:5px;
-    border:none;
-  }
-  &__character-count{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    margin-left:.4em;
-    padding:0 1em;
-    border-radius:5px;
-    border:none;
-    background-color:rgba(white,.1);
-    font-size:.8em;
-    white-space: nowrap;
-  }
-  &__controls{
-    &--disabled{
-      .button:not(.addTings__controls__cancel){
-        opacity:.3;
-      }
-    }
-  }
-}
-.ting{
-  &__name{
-    font-weight:bold;
-  }
+  width:100%;
 }
 .divider{
   background-color:black;
@@ -210,8 +176,5 @@ ul{
 .unavailable{
   text-decoration: line-through;
   color:rgba(white, .2)
-}
-.ordered{
-  color:green;
 }
 </style>

@@ -20,5 +20,9 @@ export default {
 }
 </script>
 <style lang="scss">
-
+  .ting{
+    &__name{
+      font-weight:bold;
+    }
+  }
 </style>
